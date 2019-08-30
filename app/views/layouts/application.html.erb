@@ -9,9 +9,20 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
+  <header>
+    <% if logged_in? %>
+      <h3><%= current_user.email %></h3>
+      <%= button_to "Log Out", session_url, method: :delete %>
+    <% else %>
+      <%= link_to "Sign up", new_user_url %>
+      <%= link_to "Login", new_session_url %>
+    <% end %>
+  </header>
+
   <body>
-    <%= render 'success' %>
-    <%= render 'errors' %>
+    <% if flash[:success] %>
+      <p><%= flash[:success] %></p>
+    <% end %>
 
     <%= yield %>
   </body>

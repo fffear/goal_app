@@ -8,6 +8,5 @@ module ApplicationHelper
   def submit_button(value)
     "<input type=\"submit\"
             value=\"#{h(value)}\">".html_safe
-
   end
 end

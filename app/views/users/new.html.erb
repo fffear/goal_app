@@ -1,4 +1,7 @@
-<form action="users_url" method="post">
+<h1>Signup Page</h1>
+<%= render 'layouts/errors' %>
+
+<form action="<%= users_url %>" method="post">
   <%= auth_token %>
 
   <label for="email">Email:</label>
@@ -11,5 +14,5 @@
 
   <br>
 
-  submit_button("Create User")
+  <%= submit_button("Create User") %>
 </form>
