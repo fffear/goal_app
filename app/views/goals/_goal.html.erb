@@ -1,0 +1,6 @@
+<li>
+  <%= goal.title %>
+  <% unless goal.completed %>
+    <%= button_to "Complete Goal #{goal.id}", complete_goal_url(goal), method: :post  %>
+  <% end %>
+</li>

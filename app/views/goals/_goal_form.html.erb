@@ -1,0 +1,45 @@
+<% action_url = (action == :edit) ? goal_url(goal) : goals_url %>
+<% http_method = (action == :edit) ? "patch" : "post" %>
+<% submit_button_value = (action == :edit) ? "Edit Goal" : "Create Goal" %>
+
+<%= render 'layouts/errors' %>
+
+<form action="<%= action_url %>" method="post">
+  <%= auth_token %>
+  <input type="hidden" name="_method" value="<%= http_method %>">
+
+  <label for="title">Title:</label>
+  <input id="title" type="text" name="goal[title]" value="<%= goal.title %>">
+
+  <br>
+
+  <p>Set goal to:</p>
+  <div>
+    <label for="private">
+      <input id="private" type="radio" name="goal[private]" value="<%= true %>" <%= goal.private ? "checked" : "" %>>
+      Private
+    </label>
+  </div>
+
+  <div>
+    <label for="private">
+      <input id="private" type="radio" name="goal[private]" value="<%= false %>" <%= !goal.private ? "checked" : "" %>>
+      Public
+    </label>
+  </div>
+
+  <% if action == :edit %>
+    <label for="completed">Completed?</label>
+    <input id="completed" type="checkbox" name="goal[completed]" value="<%= true %>" <%= "checked" if goal.completed %>>
+  <% end %>
+
+  <br>
+
+  <label for="details">Details:</label>
+  <br>
+  <textarea id="details" type="textarea" name="goal[details]"><%= goal.details %></textarea>
+
+  <br>
+
+  <%= submit_button(submit_button_value) %>
+</form>

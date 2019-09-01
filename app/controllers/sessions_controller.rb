@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+  before_action :requires_user!, only: %i(destroy)
   before_action :requires_no_user!, only: %i(new create)
 
   def new

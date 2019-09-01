@@ -19,9 +19,19 @@ FactoryBot.define do
   factory :user do
     email { Faker::Internet.email }
     password { Faker::Internet.password }
+
     
     factory :user_in_db do
       email { 'test@example.com' }
+      password { 'password1' }
+    end
+
+    factory :user2_in_db do
+      email { 'test2@example.com' }
+      password { 'password2' }
     end
   end
 end
+
+# id        
+# completed     

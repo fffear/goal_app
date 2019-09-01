@@ -1,31 +1,30 @@
 require 'spec_helper'
 require 'rails_helper'
+require './spec/support/auth_features_helper'
+
+include AuthFeaturesHelper
 
 feature 'the signup process' do
-  background { visit new_user_url }
+  given(:user_in_db) { FactoryBot.create(:user_in_db) }
 
   scenario 'has a new user page' do
-      expect(page).to have_content 'Signup Page'
+    visit new_user_url
+    expect(page).to have_content 'Signup Page'
   end
 
   feature 'signing up a user' do
     scenario 'shows email on the #show page after signup' do
-      fill_in 'email', with: 'test@example.com'
-      fill_in 'password', with: 'password1'
-      click_on('Create User')
+      sign_up_as("test@example.com")
       expect(page).to have_content('test@example.com')
     end
   end
 end
 
 feature 'logging in' do
-  given(:user_in_db) { FactoryBot.create(:user_in_db, password: 'password1') }
+  given(:user_in_db) { FactoryBot.create(:user_in_db) }
 
   scenario 'shows username on the homepage after login' do
-    visit new_session_url
-    fill_in 'email', with: user_in_db.email
-    fill_in 'password', with: user_in_db.password
-    click_on 'Login User'
+    login_as(user_in_db)
     expect(page).to have_current_path(user_path(User.find_by email: 'test@example.com'))
     expect(page).to have_content('test@example.com')
     expect(page).to have_content('Login successful!')
@@ -33,7 +32,7 @@ feature 'logging in' do
 end
 
 feature 'logging out' do
-  given(:user_in_db) { FactoryBot.create(:user_in_db, password: 'password1')}
+  given(:user_in_db) { FactoryBot.create(:user_in_db) }
 
   scenario 'begins with a logged out state' do
     visit root_url
@@ -42,11 +41,8 @@ feature 'logging out' do
   end
 
   scenario 'doesn\'t show email on the homepage after logout' do
-    visit new_session_url
-    fill_in 'email', with: user_in_db.email
-    fill_in 'password', with: user_in_db.password
-    click_on 'Login User'
+    login_as(user_in_db)
     click_on 'Log Out'
-    expect(page).to have_no_selector('header a', text: user_in_db.email )
+    expect(page).not_to have_selector('header a', text: user_in_db.email )
   end
 end
